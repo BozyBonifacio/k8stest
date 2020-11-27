@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bozykube-deployment
+  labels:
+    app: bozykube
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: bozykube
+      labels:
+        app: bozykube
+    spec:
+      containers:
+      - name: bozykube
+        image: bozykubeacr.azurecr.io/bozykube:v2
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: bozykube
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bozykube-service
+spec:
+  selector:
+    app: bozykube
+  ports:
+    - port: 80
+  type: LoadBalancer
+  
+  
